@@ -62,22 +62,6 @@ function Post() {
     // Toggle the chat container for the specific post
     setOpenChatId(openChatId === postId ? null : postId);
     setNewMessage(""); // Reset new message input when toggling
-  const handleDelete = async (postId) => {
-    try {
-      await axios.delete('http://localhost:5005/usr/post/delete', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          email: email,
-        },
-        data: {
-          postId: postId, // Send the postId to be deleted
-        },
-      });
-    } catch (err) {
-      console.error('Error deleting post:', err);
-      setError('Failed to delete the post. Please try again later.');
-    }
   };
 
   const handleSendMessage = async (postId) => {
@@ -185,7 +169,6 @@ function Post() {
       ))}
     </div>
   );
-}
 }
 
 export default Post;

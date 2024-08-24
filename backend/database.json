@@ -8,7 +8,9 @@
       "friends": [],
       "posts": [
         "163",
-        "81"
+        "81",
+        "808",
+        "204"
       ]
     },
     "jaden": {
@@ -117,10 +119,44 @@
       ],
       "saved": [],
       "visibility": true
+    },
+    "204": {
+      "id": "204",
+      "admin": "tongzhou33@hotmail.com",
+      "title": "asd",
+      "location": "asd",
+      "time": "asd",
+      "description": "asd",
+      "requirements": "asd",
+      "max_members": "asd",
+      "members": [
+        "tongzhou33@hotmail.com"
+      ],
+      "messages": [],
+      "saved": [],
+      "visibility": true
+    },
+    "808": {
+      "id": "808",
+      "admin": "tongzhou33@hotmail.com",
+      "title": "asd",
+      "location": "asd",
+      "time": "asd",
+      "description": "asd",
+      "requirements": "asd",
+      "max_members": "asd",
+      "members": [
+        "tongzhou33@hotmail.com"
+      ],
+      "messages": [],
+      "saved": [],
+      "visibility": true
     }
   },
   "postIds": [
     "163",
-    "81"
+    "81",
+    "808",
+    "204"
   ]
 }
