@@ -161,6 +161,17 @@ function AddPost() {
                 onChange={(e) => setRequirements(e.target.value)}
               />
             </Box>
+            <Box width="100%">
+              <Text fontWeight="bold" mb={1}>
+                Max Members
+              </Text>
+              <Input
+                size="sm"
+                placeholder="Enter max members"
+                value={max_members}
+                onChange={(e) => setNoMembers(e.target.value)}
+              />
+            </Box>
           </VStack>
         </PopoverBody>
         <PopoverFooter

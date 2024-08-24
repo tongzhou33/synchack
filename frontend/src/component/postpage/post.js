@@ -14,22 +14,20 @@ import {
   Image,
   Button,
 } from "@chakra-ui/react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { BsTrash } from "react-icons/bs";
 import { BiLike, BiChat, BiShare } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../App.js";
 
 function removeNullsFromArray(array) {
-  return array.filter(item => item !== null).reverse();
+  return array.filter((item) => item !== null).reverse();
 }
 
 function Post() {
   const [posts, setPosts] = useState([]); // State to hold posts
   const [error, setError] = useState(null); // State to handle errors
   const { token, email, updatedPost } = useRecoilValue(userState); // Destructure token and email from userState
-  
-  
- 
+
   useEffect(() => {
     // Fetch data from the backend when the component mounts
     const fetchData = async () => {
@@ -56,11 +54,28 @@ function Post() {
     fetchData();
   }, [updatedPost]); // Re-run fetchData when token or email changes
 
-  if (error) {
-    return <div>Error: {error}</div>; // Display an error message if there's an error
-  }
+  /////// Backendd delete doent work //////////////
+  // const handleDelete = async (postId) => {
+  //   try {
+  //     await axios.delete("http://localhost:5005/usr/post/delete", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //         email: email,
+  //       },
+  //       data: {
+  //         postId: postId, // Send the postId to be deleted
+  //       },
+  //     });
+  //   } catch (err) {
+  //     console.error("Error deleting post:", err);
+  //     setError("Failed to delete the post. Please try again later.");
+  //   }
+  // };
 
-  console.log(posts);
+  // if (error) {
+  //   return <div>Error: {error}</div>; // Display an error message if there's an error
+  // }
 
   return (
     <div>
@@ -71,20 +86,22 @@ function Post() {
               <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
                 <Avatar name={post.author} src={post.authorAvatarUrl} />
                 <Box>
-                  <Heading size="sm">{post.author}</Heading>
+                  <Heading size="sm">{post.title}</Heading>
                   <Text>{post.role}</Text>
                 </Box>
               </Flex>
               <IconButton
                 variant="ghost"
                 colorScheme="gray"
-                aria-label="See menu"
-                icon={<BsThreeDotsVertical />}
+                aria-label="Delete post"
+                icon={<BsTrash />}
               />
             </Flex>
           </CardHeader>
           <CardBody>
-            <Text>{post.description}</Text>
+            <Text>Description: {post.description}</Text>
+            <Text>Capacity: {post.members.length} / {post.max_members}</Text>
+            <Text>Join Requirements: {post.requirements}</Text>
           </CardBody>
           {post.imageUrl && (
             <Image objectFit="cover" src={post.imageUrl} alt="Post Image" />
