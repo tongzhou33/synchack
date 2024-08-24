@@ -1,0 +1,7 @@
+.addFriendButton {
+    transition: all 0.3s ease;
+}
+
+.addFriendButton:active {
+    transform: scale(0.95);
+}

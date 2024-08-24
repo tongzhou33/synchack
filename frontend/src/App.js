@@ -11,6 +11,7 @@ import { ChakraProvider } from "@chakra-ui/react"; // Ensure ChakraProvider wrap
 import Login from "./component/login/login.js"; // Adjust path as necessary
 import Register from "./component/register/register.js"; // Adjust path as necessary
 import Postpage from "./component/postpage/postpage.js";
+import Friends from "./component/friends/friends.js"; // Adjust path as necessary
 
 // Define Recoil state
 export const userState = atom({
@@ -38,6 +39,19 @@ function AnimatedRoutes() {
               transition={{ duration: 0.5 }}
             >
               <Login />
+            </motion.div>
+          }
+        />
+         <Route
+          path="/friends"
+          element={
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 100 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Friends />
             </motion.div>
           }
         />
