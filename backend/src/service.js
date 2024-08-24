@@ -1,13 +1,13 @@
-import fs from 'fs';
-import jwt from 'jsonwebtoken';
-import AsyncLock from 'async-lock';
-import { InputError, AccessError } from './error';
+import fs from "fs";
+import jwt from "jsonwebtoken";
+import AsyncLock from "async-lock";
+import { InputError, AccessError } from "./error.js";
 
 const lock = new AsyncLock();
 
-const JWT_SECRET = 'Bananallamasquad3421';
-const DATABASE_FILE = './database.json';
-const POSTCODE_FILE = '../assets/postcodes.json';
+const JWT_SECRET = "Bananallamasquad3421";
+const DATABASE_FILE = "./database.json";
+const POSTCODE_FILE = "../assets/postcodes.json";
 
 /***************************************************************
                        State Management
@@ -21,7 +21,7 @@ const sessionTimeouts = {};
 
 const update = (admins) =>
   new Promise((resolve, reject) => {
-    lock.acquire('saveData', () => {
+    lock.acquire("saveData", () => {
       try {
         fs.writeFileSync(
           DATABASE_FILE,
@@ -36,7 +36,7 @@ const update = (admins) =>
         );
         resolve();
       } catch {
-        reject(new Error('Writing to database failed'));
+        reject(new Error("Writing to database failed"));
       }
     });
   });
@@ -54,7 +54,7 @@ try {
 
   const postcodes = JSON.parse(fs.readFileSync(POSTCODE_FILE));
 } catch {
-  console.log('WARNING: No database found, create a new one');
+  console.log("WARNING: No database found, create a new one");
   save();
 }
 
@@ -64,7 +64,7 @@ try {
 
 export const userLock = (callback) =>
   new Promise((resolve, reject) => {
-    lock.acquire('userAuthLock', callback(resolve, reject));
+    lock.acquire("userAuthLock", callback(resolve, reject));
   });
 
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
@@ -96,7 +96,7 @@ const getLatLon = (suburb) => {
     }
   }
 
-  throw new InputError('Invalid suburb');
+  throw new InputError("Invalid suburb");
 };
 
 /***************************************************************
@@ -105,14 +105,14 @@ const getLatLon = (suburb) => {
 
 export const getEmailFromAuthorization = (authorization) => {
   try {
-    const token = authorization.replace('Bearer ', '');
+    const token = authorization.replace("Bearer ", "");
     const { email } = jwt.verify(token, JWT_SECRET);
     if (!(email in admins)) {
-      throw new AccessError('Invalid Token');
+      throw new AccessError("Invalid Token");
     }
     return email;
   } catch {
-    throw new AccessError('Invalid token');
+    throw new AccessError("Invalid token");
   }
 };
 
@@ -120,10 +120,10 @@ export const login = (email, password) =>
   userLock((resolve, reject) => {
     if (email in admins) {
       if (admins[email].password === password) {
-        resolve(jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' }));
+        resolve(jwt.sign({ email }, JWT_SECRET, { algorithm: "HS256" }));
       }
     }
-    reject(new InputError('Invalid username or password'));
+    reject(new InputError("Invalid username or password"));
   });
 
 export const logout = (email) =>
@@ -135,7 +135,7 @@ export const logout = (email) =>
 export const register = (email, password, name, dob, age, location) =>
   userLock((resolve, reject) => {
     if (email in admins) {
-      return reject(new InputError('Email address already registered'));
+      return reject(new InputError("Email address already registered"));
     }
     admins[email] = {
       name,
@@ -147,7 +147,7 @@ export const register = (email, password, name, dob, age, location) =>
       friends: [],
       posts: [],
     };
-    const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
+    const token = jwt.sign({ email }, JWT_SECRET, { algorithm: "HS256" });
     resolve(token);
   });
 
@@ -184,7 +184,7 @@ export const createPost = (
       resolve();
     }
 
-    reject(new AccessError('Invalid email'));
+    reject(new AccessError("Invalid email"));
   });
 };
 
@@ -193,7 +193,7 @@ export const getPosts = (email) => {
     return posts;
   }
 
-  throw new AccessError('Invalid email');
+  throw new AccessError("Invalid email");
 };
 
 export const joinPost = (email, postId) => {
@@ -203,7 +203,7 @@ export const joinPost = (email, postId) => {
       resolve();
     }
 
-    reject(new AccessError('Invalid email or post'));
+    reject(new AccessError("Invalid email or post"));
   });
 };
 
@@ -221,7 +221,7 @@ export const leavePost = (email, postId) => {
       resolve();
     }
 
-    reject(new AccessError('Invalid email or post'));
+    reject(new AccessError("Invalid email or post"));
   });
 };
 
@@ -233,10 +233,10 @@ export const deletePost = (email, postId) => {
         resolve();
       }
 
-      reject(new AccessError('User is not admin of post'));
+      reject(new AccessError("User is not admin of post"));
     }
 
-    reject(new AccessError('Invalid email or post'));
+    reject(new AccessError("Invalid email or post"));
   });
 };
 
@@ -248,10 +248,10 @@ export const hidePost = (email, postId) => {
         resolve();
       }
 
-      reject(new AccessError('User is not admin of post'));
+      reject(new AccessError("User is not admin of post"));
     }
 
-    reject(new AccessError('Invalid email or post'));
+    reject(new AccessError("Invalid email or post"));
   });
 };
 
@@ -262,7 +262,7 @@ export const savePost = (email, postId) => {
       resolve();
     }
 
-    reject(new AccessError('Invalid email or post'));
+    reject(new AccessError("Invalid email or post"));
   });
 };
 
@@ -281,7 +281,7 @@ export const sendMessage = (email, postId, time, message) => {
       resolve();
     }
 
-    reject(new AccessError('Invalid email or post'));
+    reject(new AccessError("Invalid email or post"));
   });
 };
 
@@ -290,7 +290,7 @@ export const getMessages = (postId) => {
     return posts[postId].messages;
   }
 
-  throw new AccessError('Invalid post');
+  throw new AccessError("Invalid post");
 };
 
 /***************************************************************
@@ -303,7 +303,7 @@ export const addFriend = (email, friendEmail) => {
       resolve();
     }
 
-    reject(new AccessError('Invalid email or friend email'));
+    reject(new AccessError("Invalid email or friend email"));
   });
 };
 
@@ -316,7 +316,7 @@ export const removeFriend = (email, friendEmail) => {
       resolve();
     }
 
-    reject(new AccessError('Invalid email or friend email'));
+    reject(new AccessError("Invalid email or friend email"));
   });
 };
 
@@ -325,7 +325,7 @@ export const getFriends = (email) => {
     return admins[email].friends;
   }
 
-  throw new AccessError('Invalid email');
+  throw new AccessError("Invalid email");
 };
 
 /***************************************************************
@@ -334,10 +334,10 @@ export const getFriends = (email) => {
 
 export const searchPosts = (email, search) => {
   if (!email in admins) {
-    throw new AccessError('Invalid email');
+    throw new AccessError("Invalid email");
   }
 
-  const searchWords = search.split(' ');
+  const searchWords = search.split(" ");
 
   const filteredPosts = posts.filter((post) => {
     for (let word of searchWords) {
