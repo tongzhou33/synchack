@@ -1,12 +1,91 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
-import { IconButton } from "@chakra-ui/react";
+import { FaUserFriends } from "react-icons/fa";
+import {
+  Box,
+  IconButton,
+  Input,
+  VStack,
+  Button,
+  Text,
+  Flex,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverFooter,
+  ButtonGroup,
+} from "@chakra-ui/react";
 import styles from "./style/postpage.module.css"; // Import the CSS module
 import Post from "./post.js"; // Import the Post component
-import { FaUserFriends } from "react-icons/fa";
-import { px } from "framer-motion";
+
+function WalkthroughPopover() {
+  const initialFocusRef = React.useRef();
+  return (
+    <Popover
+      initialFocusRef={initialFocusRef}
+      placement="bottom"
+      closeOnBlur={false}
+    >
+      <PopoverTrigger>
+        <Button colorScheme="blue" style={{ borderRadius: "20px" }}>
+          New Post
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent color="white" bg="blue.800" borderColor="blue.800">
+        <PopoverHeader pt={4} fontWeight="bold" border="0">
+          Manage Your Channels
+        </PopoverHeader>
+        <PopoverArrow bg="blue.800" />
+        <PopoverCloseButton />
+        <PopoverBody>
+          <VStack spacing={4} width="100%">
+            {[
+              "Component 1",
+              "Component 2",
+              "Component 3",
+              "Component 4",
+              "Component 5",
+            ].map((label, index) => (
+              <Box key={index} width="100%">
+                <Text fontWeight="bold" mb={1}>
+                  {label}
+                </Text>
+                <Input size="sm" placeholder={label} />
+              </Box>
+            ))}
+          </VStack>
+        </PopoverBody>
+        <PopoverFooter
+          border="0"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          pb={4}
+        >
+          <Box fontSize="sm">Step 2 of 4</Box>
+          <ButtonGroup size="sm">
+            <Button colorScheme="green">Setup Email</Button>
+            <Button colorScheme="blue" ref={initialFocusRef}>
+              Next
+            </Button>
+          </ButtonGroup>
+        </PopoverFooter>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 function Postpage() {
+  const [showInputs, setShowInputs] = useState(false); // State to manage input visibility
+
+  const handleToggle = () => {
+    setShowInputs(!showInputs); // Toggle input fields visibility
+  };
+
   return (
     <div className={styles.appContainer}>
       {/* High-tech grid overlay */}
@@ -22,9 +101,7 @@ function Postpage() {
             <div className={styles.headerContent}>
               <span style={{ display: "flex" }}>
                 <IconButton
-                  style={{
-                    marginRight: "2 rem",
-                  }}
+                  style={{ marginRight: "0.5rem" }}
                   colorScheme="blue"
                   aria-label="Search database"
                   icon={<FaUserFriends />}
@@ -38,12 +115,7 @@ function Postpage() {
                   placeholder="Search posts, friends..."
                 />
               </div>
-              <IconButton
-                colorScheme="blue"
-                aria-label="Search database"
-                style={{ borderRadius: "20px" }}
-                icon={<CiCirclePlus />}
-              />
+              <WalkthroughPopover />
             </div>
             <p>Connect, share, and make new friends!</p>
           </div>
@@ -54,11 +126,11 @@ function Postpage() {
           <h2>Recent Posts</h2>
 
           <Post />
-          <br></br>
+          <br />
           <Post />
-          <br></br>
+          <br />
           <Post />
-          <br></br>
+          <br />
           {/* Add more posts to see the scrolling effect */}
         </section>
       </section>
