@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUserFriends } from "react-icons/fa";
+import { FaSync, FaUserFriends  } from "react-icons/fa";
 import {
   background,
   IconButton,
@@ -8,11 +8,18 @@ import styles from "./style/postpage.module.css"; // Import the CSS module
 import Post from "./post.js"; // Import the Post component
 import AddPost from "./addpost.js";
 import Friends from "../friends/friends.js";
-import { color, motion } from 'framer-motion';
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userState } from "../../App.js";
 
 function Postpage() {
   const [showInputs, setShowInputs] = useState(false); // State to manage input visibility
   const [showAddPost, setShowAddPost] = useState(false); // State to manage AddPost visibility
+  const { token, email, updatedPost } = useRecoilValue(userState); // Destructure token and email from userState
+  const [, setUser] = useRecoilState(userState);
+
+  const handleRefresh = () => {
+    setUser((prev) => ({ ...prev, updatedPost: !prev.updatedPost }));
+  }
 
 
   const handleToggle = () => {
@@ -57,17 +64,30 @@ function Postpage() {
                 <Friends />
               : null
             }
-                
+            
             <p>Connect, share, and make new friends!</p>
           </div>
         </header>
 
         {/* Post Feed Section */}
-        <section className={styles.postFeed}>
+        <section className={styles.postFeedTitle}>
           <h2>Recent Posts</h2>
-          <Post />
+          <IconButton
+                  style={{ marginRight: "0.5rem" }}
+                  colorScheme="blue"
+                  aria-label="Search database"
+                  icon={<FaSync/>}
+                  onClick={handleRefresh}
+                />
+ 
           {/* Add more posts to see the scrolling effect */}
         </section>
+
+        <section className={styles.postFeedBody}>
+          <Post />
+        </section>
+
+
       </section>
     </div>
   );

@@ -96,8 +96,24 @@
 }
 
 /* Post feed section styling */
-.postFeed {
-    margin-top: 20px; /* Space between navigation and posts */
+.postFeedTitle {
+    margin-left: auto;
+    margin-right: auto;
+    
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Space between items */
+}
+
+.postFeedBody {
+    margin-left: auto;
+    margin-right: auto;
+
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Space between items */
 }
 
 /* Interaction buttons styling */
