@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import styles from "./styles/login.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Alert } from "antd";
-import { useRecoilState } from "recoil";
-import { userState } from "../../App.js";
+import React, { useState } from 'react';
+import styles from './styles/login.module.css';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Alert } from '@chakra-ui/react';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../App.js';
 
 function LoginPage() {
   const [, setUser] = useRecoilState(userState);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5005/admin/auth/login", {
+      const response = await axios.post('http://localhost:5005/admin/auth/login', {
         email: username,
         password: password,
       });
@@ -26,28 +26,21 @@ function LoginPage() {
       const email = username;
 
       setUser({ token, email }); // Update Recoil state with token and email
-      localStorage.setItem("token", token);
-      localStorage.setItem("email", username);
+      localStorage.setItem('token', token);
+      localStorage.setItem('email', username);
 
-      navigate("/postpage");
+      navigate('/postpage');
     } catch (err) {
-      setError("Login failed.");
+      setError('Login failed.');
     }
   };
 
   return (
-    <section className="login">
+    <section className='login'>
       <div className={styles.background}>
         {error && (
           <div className={styles.errorPopup}>
-            <Alert
-              message="Error"
-              description={error}
-              type="error"
-              showIcon
-              closable
-              onClose={() => setError(null)}
-            />
+            <Alert message='Error' description={error} type='error' showIcon closable onClose={() => setError(null)} />
           </div>
         )}
 
@@ -62,31 +55,31 @@ function LoginPage() {
 
               <div className={styles.inputBox}>
                 <input
-                  type="text"
-                  placeholder="Username"
+                  type='text'
+                  placeholder='Username'
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className={styles.inputBox}>
                 <input
-                  type="password"
-                  placeholder="Password"
+                  type='password'
+                  placeholder='Password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className={styles.inputBoxGroup}>
-                <Link to="#" className={styles.link}>
+                <Link to='#' className={styles.link}>
                   Forget Password
                 </Link>
-                <Link to="/register" className={styles.link}>
+                <Link to='/register' className={styles.link}>
                   Register
                 </Link>
               </div>
 
               <div className={styles.inputBox}>
-                <input type="submit" name="" value="Login" />
+                <input type='submit' name='' value='Login' />
               </div>
             </form>
           </div>
