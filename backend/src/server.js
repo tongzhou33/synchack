@@ -1,11 +1,9 @@
-import fs from "fs";
-import express from "express";
-import swaggerUi from "swagger-ui-express";
-import bodyParser from "body-parser";
-import cors from "cors";
+import fs from 'fs';
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
-import { InputError, AccessError } from "./error.js";
-import swaggerDocument from "../swagger.json";
+import { InputError, AccessError } from './error.js';
 import {
   getEmailFromAuthorization,
   login,
@@ -18,13 +16,13 @@ import {
   joinPost,
   leavePost,
   hidePost,
-} from "./service";
+} from './service';
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 const catchErrors = (fn) => async (req, res) => {
   try {
@@ -37,7 +35,7 @@ const catchErrors = (fn) => async (req, res) => {
       res.status(403).send({ error: err.message });
     } else {
       console.log(err);
-      res.status(500).send({ error: "A system error ocurred" });
+      res.status(500).send({ error: 'A system error ocurred' });
     }
   }
 };
@@ -47,12 +45,12 @@ const catchErrors = (fn) => async (req, res) => {
 ***************************************************************/
 
 const authed = (fn) => async (req, res) => {
-  const email = getEmailFromAuthorization(req.header("Authorization"));
+  const email = getEmailFromAuthorization(req.header('Authorization'));
   await fn(req, res, email);
 };
 
 app.post(
-  "/admin/auth/login",
+  '/admin/auth/login',
   catchErrors(async (req, res) => {
     const { email, password } = req.body;
     const token = await login(email, password);
@@ -61,7 +59,7 @@ app.post(
 );
 
 app.post(
-  "/admin/auth/register",
+  '/admin/auth/register',
   catchErrors(async (req, res) => {
     const { email, password, name, dob, age, location } = req.body;
     const token = await register(email, password, name, dob, age, location);
@@ -70,7 +68,7 @@ app.post(
 );
 
 app.post(
-  "/admin/auth/logout",
+  '/admin/auth/logout',
   catchErrors(
     authed(async (req, res, email) => {
       await logout(email);
@@ -84,7 +82,7 @@ app.post(
 ***************************************************************/
 
 app.get(
-  "/usr/post/all",
+  '/usr/post/all',
   catchErrors(
     authed(async (req, res, email) => {
       return res.json({ posts: getPosts(email) });
@@ -93,36 +91,19 @@ app.get(
 );
 
 app.put(
-  "/usr/post/create",
+  '/usr/post/create',
   catchErrors(
     authed(async (req, res, email) => {
-      const {
-        postId,
-        title,
-        location,
-        time,
-        description,
-        max_members,
-        requirements,
-      } = req.body;
+      const { postId, title, location, time, description, max_members, requirements } = req.body;
 
-      await createPost(
-        email,
-        postId,
-        title,
-        location,
-        time,
-        description,
-        max_members,
-        requirements
-      );
+      await createPost(email, postId, title, location, time, description, max_members, requirements);
       return res.json({});
     })
   )
 );
 
 app.delete(
-  "/usr/post/delete",
+  '/usr/post/delete',
   catchErrors(
     authed(async (req, res, email) => {
       const { postId } = req.body;
@@ -133,7 +114,7 @@ app.delete(
 );
 
 app.post(
-  "/usr/post/join",
+  '/usr/post/join',
   catchErrors(
     authed(async (req, res, email) => {
       const { postId } = req.body;
@@ -144,7 +125,7 @@ app.post(
 );
 
 app.post(
-  "/usr/post/leave",
+  '/usr/post/leave',
   catchErrors(
     authed(async (req, res, email) => {
       const { postId } = req.body;
@@ -155,7 +136,7 @@ app.post(
 );
 
 app.post(
-  "/usr/post/save",
+  '/usr/post/save',
   catchErrors(
     authed(async (req, res, email) => {
       const { postId } = req.body;
@@ -166,7 +147,7 @@ app.post(
 );
 
 app.post(
-  "/usr/post/hide",
+  '/usr/post/hide',
   catchErrors(
     authed(async (req, res, email) => {
       const { postId } = req.body;
@@ -181,7 +162,7 @@ app.post(
 ***************************************************************/
 
 app.get(
-  "/usr/message/all",
+  '/usr/message/all',
   catchErrors(
     authed(async (req, res, email) => {
       return res.json({ messages: getMessages(email) });
@@ -190,7 +171,7 @@ app.get(
 );
 
 app.post(
-  "/usr/message/send",
+  '/usr/message/send',
   catchErrors(
     authed(async (req, res, email) => {
       const { postId, time, message } = req.body;
@@ -205,7 +186,7 @@ app.post(
 ***************************************************************/
 
 app.post(
-  "/usr/friend/add",
+  '/usr/friend/add',
   catchErrors(
     authed(async (req, res, email) => {
       const { friendEmail } = req.body;
@@ -219,12 +200,10 @@ app.post(
                        Running Server
 ***************************************************************/
 
-app.get("/", (req, res) => res.redirect("/docs"));
+app.get('/', (req, res) => res.redirect('/docs'));
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-const configData = JSON.parse(fs.readFileSync("../frontend/src/config.json"));
-const port = "BACKEND_PORT" in configData ? configData.BACKEND_PORT : 5000;
+const configData = JSON.parse(fs.readFileSync('../frontend/src/config.json'));
+const port = 'BACKEND_PORT' in configData ? configData.BACKEND_PORT : 5000;
 
 const server = app.listen(port, () => {
   console.log(`Backend is now listening on port ${port}!`);
