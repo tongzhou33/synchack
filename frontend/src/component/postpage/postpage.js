@@ -23,7 +23,7 @@ function Postpage() {
               <span style={{ display: "flex" }}>
                 <IconButton
                   style={{
-                    marginRight: "0.5rem",
+                    marginRight: "2 rem",
                   }}
                   colorScheme="blue"
                   aria-label="Search database"
