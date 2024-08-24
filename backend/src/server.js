@@ -13,6 +13,7 @@ import {
   save,
   createPost,
   savePost,
+  sendMessage,
   deletePost,
   joinPost,
   leavePost,

@@ -13,9 +13,11 @@ import {
   Text,
   Image,
   Button,
+  Input,
+  Stack,
 } from "@chakra-ui/react";
 import { BsTrash } from "react-icons/bs";
-import { BiLike, BiChat, BiShare } from "react-icons/bi";
+import { BiLike, BiChat, BiShare, BiUserPlus, BiBookmarkAdd, BiBookmark } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../App.js";
 
@@ -26,6 +28,8 @@ function removeNullsFromArray(array) {
 function Post() {
   const [posts, setPosts] = useState([]); // State to hold posts
   const [error, setError] = useState(null); // State to handle errors
+  const [openChatId, setOpenChatId] = useState(null); // State to track which post's chat is open
+  const [newMessage, setNewMessage] = useState(""); // State to handle new message input
   const { token, email, updatedPost } = useRecoilValue(userState); // Destructure token and email from userState
 
   useEffect(() => {
@@ -52,30 +56,37 @@ function Post() {
     };
 
     fetchData();
-  }, [updatedPost]); // Re-run fetchData when token or email changes
+  }, [updatedPost]); // Re-run fetchData when updatedPost changes
 
-  /////// Backendd delete doent work //////////////
-  // const handleDelete = async (postId) => {
-  //   try {
-  //     await axios.delete("http://localhost:5005/usr/post/delete", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //         email: email,
-  //       },
-  //       data: {
-  //         postId: postId, // Send the postId to be deleted
-  //       },
-  //     });
-  //   } catch (err) {
-  //     console.error("Error deleting post:", err);
-  //     setError("Failed to delete the post. Please try again later.");
-  //   }
-  // };
+  const toggleChat = (postId) => {
+    // Toggle the chat container for the specific post
+    setOpenChatId(openChatId === postId ? null : postId);
+    setNewMessage(""); // Reset new message input when toggling
+  };
 
-  // if (error) {
-  //   return <div>Error: {error}</div>; // Display an error message if there's an error
-  // }
+  const handleSendMessage = async (postId) => {
+    if (!newMessage.trim()) return; // Do not send empty messages
+
+    try {
+      const time = new Date().toISOString(); // Example timestamp
+      await axios.post(
+        "http://localhost:5005/usr/message/send",
+        { postId, time, message: newMessage },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            email: email,
+          },
+        }
+      );
+
+      setNewMessage(""); // Clear the input field after sending
+    } catch (err) {
+      console.error("Error sending message:", err);
+      setError("Failed to send message. Please try again later.");
+    }
+  };
 
   return (
     <div>
@@ -116,16 +127,44 @@ function Post() {
               },
             }}
           >
-            <Button flex="1" variant="ghost" leftIcon={<BiLike />}>
-              Like
+            <Button flex="1" variant="ghost" leftIcon={<BiUserPlus />}>
+              Join Group
             </Button>
-            <Button flex="1" variant="ghost" leftIcon={<BiChat />}>
-              Comment
+            <Button
+              flex="1"
+              variant="ghost"
+              leftIcon={<BiChat />}
+              onClick={() => toggleChat(post.id)}
+            >
+              Chat
             </Button>
-            <Button flex="1" variant="ghost" leftIcon={<BiShare />}>
-              Share
+            <Button flex="1" variant="ghost" leftIcon={<BiBookmark />}>
+              Bookmark
             </Button>
           </CardFooter>
+
+          {openChatId === post.id && (
+            <Box p={4} bg="gray.100">
+              <Text>Group Chat:</Text>
+              {post.messages && post.messages.map((message) => (
+                <Box key={message.id} p={2} bg="white" my={2}>
+                  <Text fontWeight="bold">{message.author}</Text>
+                  <Text>{message.text}</Text>
+                </Box>
+              ))}
+              <Stack direction="row" mt={4} align="center">
+                <Input
+                  placeholder="Type your message..."
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  flex="1"
+                />
+                <Button colorScheme="blue" onClick={() => handleSendMessage(post.id)}>
+                  Send
+                </Button>
+              </Stack>
+            </Box>
+          )}
         </Card>
       ))}
     </div>
