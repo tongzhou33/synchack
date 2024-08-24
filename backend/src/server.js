@@ -197,6 +197,15 @@ app.post(
   )
 );
 
+app.get(
+  '/usr/friend/all',
+  catchErrors(
+    authed(async (req, res, email) => {
+      return res.json({ friends: getFriends(email) });
+    })
+  )
+);
+
 /***************************************************************
                        Running Server
 ***************************************************************/

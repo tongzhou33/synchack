@@ -320,7 +320,11 @@ export const removeFriend = (email, friendEmail) => {
 
 export const getFriends = (email) => {
   if (email in admins) {
-    return admins[email].friends;
+    let friends = [];
+    for (let friend of admins[email].friends) {
+      friends.push(admins[friend]);
+    }
+    return friends;
   }
 
   throw new AccessError('Invalid email');
