@@ -1,4 +1,13 @@
 {
-  "admins": {},
+  "admins": {
+    "tongzhou33@hotmail.com": {
+      "name": "Tong",
+      "password": "123",
+      "age": "18",
+      "likes": [],
+      "friends": [],
+      "posts": []
+    }
+  },
   "posts": []
 }

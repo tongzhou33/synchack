@@ -16,30 +16,39 @@ import {
 } from "@chakra-ui/react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiLike, BiChat, BiShare } from "react-icons/bi";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../App.js";
 
 function Post() {
   const [posts, setPosts] = useState([]); // State to hold posts
   const [error, setError] = useState(null); // State to handle errors
+  const { token, email } = useRecoilValue(userState); // Access user token and email
 
   useEffect(() => {
     // Fetch data from the backend when the component mounts
     const fetchData = async () => {
+      if (!token || !email) {
+        setError("No token or email found. Please log in first.");
+        return;
+      }
+
       try {
         const response = await axios.get("http://localhost:5005/usr/post/all", {
           headers: {
-            Authorization: "Bearer YOUR_TOKEN_HERE", // Replace with the actual token or use state to manage it
+            Authorization: `Bearer ${token}`, // Use the token for authorization
             "Content-Type": "application/json",
+            Email: email, // Add email header if the backend requires it
           },
         });
         setPosts(response.data.posts); // Assuming response contains { posts: [...] }
       } catch (err) {
         console.error("Error fetching posts:", err);
-        setError(err.message); // Set the error message in case of failure
+        setError("Failed to fetch posts. Please try again later.");
       }
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures this runs once when component mounts
+  }, [token, email]); // Re-run fetchData when token or email changes
 
   if (error) {
     return <div>Error: {error}</div>; // Display an error message if there's an error

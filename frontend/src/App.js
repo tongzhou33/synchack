@@ -15,7 +15,10 @@ import Postpage from "./component/postpage/postpage.js";
 // Define Recoil state
 export const userState = atom({
   key: "userState",
-  default: null, // Default to null or any initial state
+  default: {
+    token: null,
+    email: null,
+  }, // Default to null or any initial state
 });
 
 // Component to handle animated routes
