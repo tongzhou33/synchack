@@ -18,6 +18,8 @@ import {
   ButtonGroup,
   useToast,
 } from "@chakra-ui/react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userState } from "../../App.js";
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -32,15 +34,19 @@ function AddPost() {
   const [requirements, setRequirements] = useState("");
   const toast = useToast();
   const initialFocusRef = React.useRef();
+  const { token, email } = useRecoilValue(userState); // Destructure token and email from userState
 
   const handleSubmit = async () => {
     // Prepare the data to send to the backend
     const postData = {
-      title,
-      description,
-      location,
-      date,
-      requirements,
+      email: email,
+      postId: "0", // Assuming postId is randomly generated
+      title: title,
+      location: location,
+      time: date,
+      description: description,
+      max_members: max_members,
+      requirements: requirements,
     };
 
     try {
@@ -50,13 +56,8 @@ function AddPost() {
         postData,
         {
           headers: {
-            postId: getRandomNumber,
-            title: title,
-            location: location,
-            time: date,
-            description: description,
-            max_members: max_members,
-            requirements: requirements,
+            Authorization: `Bearer ${token}`, // Include token for authentication
+            "Content-Type": "application/json",
           },
         }
       );
@@ -81,7 +82,6 @@ function AddPost() {
       console.error("Error creating post:", error);
     }
   };
-
   return (
     <Popover
       initialFocusRef={initialFocusRef}

@@ -7,9 +7,43 @@
       "likes": [],
       "friends": [],
       "posts": [
-        null
+        "1",
+        "0",
+        "0",
+        "0"
       ]
     }
   },
-  "posts": []
+  "posts": [
+    {
+      "admin": "tongzhou33@hotmail.com",
+      "title": "2",
+      "location": "2",
+      "time": "2",
+      "description": "2",
+      "requirements": "2",
+      "max_members": "",
+      "members": [
+        "tongzhou33@hotmail.com"
+      ],
+      "messages": [],
+      "saved": [],
+      "visibility": true
+    },
+    {
+      "admin": "tongzhou33@hotmail.com",
+      "title": "2",
+      "location": "2",
+      "time": "2",
+      "description": "2",
+      "requirements": "2",
+      "max_members": "",
+      "members": [
+        "tongzhou33@hotmail.com"
+      ],
+      "messages": [],
+      "saved": [],
+      "visibility": true
+    }
+  ]
 }

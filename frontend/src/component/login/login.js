@@ -22,9 +22,12 @@ function LoginPage() {
         password: password,
       });
 
-      const { token, email } = response.data; // Assuming backend returns email
+      const { token } = response.data; // Assuming backend returns email
+      const email = username;
+
       setUser({ token, email }); // Update Recoil state with token and email
       localStorage.setItem("token", token);
+      localStorage.setItem("email", username);
 
       navigate("/postpage");
     } catch (err) {

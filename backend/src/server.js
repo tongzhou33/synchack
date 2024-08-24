@@ -6,6 +6,7 @@ import cors from 'cors';
 import { InputError, AccessError } from './error.js';
 import {
   getEmailFromAuthorization,
+  getPosts,
   login,
   logout,
   register,

@@ -22,8 +22,8 @@ import { userState } from "../../App.js";
 function Post() {
   const [posts, setPosts] = useState([]); // State to hold posts
   const [error, setError] = useState(null); // State to handle errors
-  const { token, email } = useRecoilValue(userState); // Access user token and email
-
+  const { token, email } = useRecoilValue(userState); // Destructure token and email from userState
+  
   useEffect(() => {
     // Fetch data from the backend when the component mounts
     const fetchData = async () => {
@@ -31,13 +31,15 @@ function Post() {
         setError("No token or email found. Please log in first.");
         return;
       }
+      console.log(email);
+      console.log(token);
 
       try {
         const response = await axios.get("http://localhost:5005/usr/post/all", {
           headers: {
             Authorization: `Bearer ${token}`, // Use the token for authorization
             "Content-Type": "application/json",
-            Email: email, // Add email header if the backend requires it
+            email: email, // Add email header if the backend requires it
           },
         });
         setPosts(response.data.posts); // Assuming response contains { posts: [...] }
