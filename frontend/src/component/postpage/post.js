@@ -1,29 +1,79 @@
-import React from 'react';
-import styles from './style/postpage.module.css'; // Import the CSS module
+import React from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Flex,
+  Avatar,
+  Box,
+  Heading,
+  IconButton,
+  Text,
+  Image,
+  Button,
+} from "@chakra-ui/react";
+// Importing icons from react-icons
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiLike, BiChat, BiShare } from "react-icons/bi";
+
+import styles from "./style/postpage.module.css"; // Import the CSS module
 
 function Post() {
-    return (
-        <div className={styles.postContainer}>
-            <div className={styles.postHeader}>
-                <img src="https://via.placeholder.com/40" alt="Profile" className={styles.profilePic} />
-                <span className={styles.username}>John Doe</span>
-            </div>
-            <div className={styles.postContent}>
-                <p>This is the content of the post. It could be text, images, or a combination of both.</p>
-                <img src="https://via.placeholder.com/300" alt="Post Content" className={styles.postImage} />
-            </div>
-            <div className={styles.postInteractions}>
-                <button className={styles.interactionButton}>Like</button>
-                <button className={styles.interactionButton}>Comment</button>
-                <button className={styles.interactionButton}>Share</button>
-                <button className={styles.interactionButton}>Save</button>
-            </div>
-            <div className={styles.postFooter}>
-                <span className={styles.timestamp}>2 hours ago</span>
-                <span className={styles.additionalInfo}>View all 10 comments</span>
-            </div>
-        </div>
-    );
+  return (
+    <Card maxW="md">
+      <CardHeader>
+        <Flex spacing="4">
+          <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+            <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+
+            <Box>
+              <Heading size="sm">Segun Adebayo</Heading>
+              <Text>Creator, Chakra UI</Text>
+            </Box>
+          </Flex>
+          <IconButton
+            variant="ghost"
+            colorScheme="gray"
+            aria-label="See menu"
+            icon={<BsThreeDotsVertical />}
+          />
+        </Flex>
+      </CardHeader>
+      <CardBody>
+        <Text>
+          With Chakra UI, I wanted to sync the speed of development with the
+          speed of design. I wanted the developer to be just as excited as the
+          designer to create a screen.
+        </Text>
+      </CardBody>
+      <Image
+        objectFit="cover"
+        src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        alt="Chakra UI"
+      />
+
+      <CardFooter
+        justify="space-between"
+        flexWrap="wrap"
+        sx={{
+          "& > button": {
+            minW: "136px",
+          },
+        }}
+      >
+        <Button flex="1" variant="ghost" leftIcon={<BiLike />}>
+          Like
+        </Button>
+        <Button flex="1" variant="ghost" leftIcon={<BiChat />}>
+          Comment
+        </Button>
+        <Button flex="1" variant="ghost" leftIcon={<BiShare />}>
+          Share
+        </Button>
+      </CardFooter>
+    </Card>
+  );
 }
 
 export default Post;
