@@ -6,7 +6,9 @@
       "age": "18",
       "likes": [],
       "friends": [],
-      "posts": []
+      "posts": [
+        null
+      ]
     }
   },
   "posts": []
