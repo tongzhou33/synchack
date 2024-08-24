@@ -1,166 +1,154 @@
-/* Import Google Font for a friendly, modern look */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https:fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-/* Main container for the app */
 .appContainer {
-    min-height: 100vh; /* Use min-height to allow for scrollable content */
-    display: flex;
-    justify-content: flex-start; /* Align items to the start */
-    align-items: flex-start; /* Align items at the top to allow content to flow down */
-    background-color: #1e1e2f; /* Dark base color for high-tech look */
-    position: relative; /* Relative positioning for layering */
-    overflow: hidden; /* Prevent overflow issues */
-    padding: 20px; /* Padding for spacing */
-    flex-direction: column; /* Stack items vertically */
-    width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #1e1e2f;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  flex-direction: column;
+  width: 100%;
 }
 
-/* Chinese mountains overlay - make it brighter */
 .mountainsOverlay {
-    position: fixed; /* Fixed position to remain static during scrolling */
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../images/wukong.jpg') no-repeat center bottom; /* Replace with your mountain image path */
-    background-size: cover; /* Cover the entire container */
-    opacity: 0.3; /* Further reduced opacity for a softer background effect */
-    pointer-events: none; /* Prevent interaction */
-    z-index: 1; /* Layer below content */
-    filter: brightness(1.2); /* Further increase brightness */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../images/wukong.jpg') no-repeat center bottom;
+  background-size: cover;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 1;
+  filter: brightness(1.2);
 }
 
-/* Content container to ensure it sits above the background */
 .postPageContainer {
-    z-index: 2; /* Layer above the overlays */
-    color: #ffffff; /* Text color for visibility */
-    text-align: left; /* Align text to the left */
-    padding: 20px;
-    position: relative; /* Ensure content is positioned above background */
-    width: 100%;
-    max-width: 800px; /* Limit the width for better readability */
-    margin: 20px auto; /* Center align the content container */
-    background: rgba(0, 0, 0, 0.8); /* Slightly transparent background for text readability */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  color: #ffffff;
+  text-align: left;
+  padding: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Hero Section Styling */
 .hero {
-    background: none;
-    padding: 20px;
-    text-align: left; /* Align content to the left */
+  background: none;
+  padding: 20px;
+  text-align: left;
 }
-
 
 .headerContent {
-    display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: space-between; /* Space between title and search bar */
-    margin-bottom: 10px; /* Space below the hero content */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .title {
-    font-family: 'Poppins', sans-serif; /* Modern, friendly font */
-    font-size: 1.5rem; /* Size for title */
-    font-weight: 600; /* Semi-bold for emphasis */
-    color: #ffffff; /* White color for title */
-    margin-right: 20px; /* Space between title and search bar */
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-right: 20px;
 }
 
-/* Navigation section - vertically aligned items */
 .navigation {
-    display: flex;
-    flex-direction: column; /* Arrange items vertically */
-    align-items: flex-start;
-    margin-bottom: 20px; /* Space below navigation */
-    gap: 10px; /* Space between navigation items */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  gap: 10px;
 }
 
 .navLinks {
-    list-style: none; /* Remove bullet points from list */
-    padding: 0; /* Remove default padding */
+  list-style: none;
+  padding: 0;
 }
 
 .navLinks li {
-    margin-bottom: 10px; /* Space between links */
+  margin-bottom: 10px;
 }
 
 .navLinks a {
-    text-decoration: none; /* Remove underline from links */
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.2rem; /* Size for navigation items */
-    color: #ffffff; /* White color for visibility */
-    padding: 5px 0; /* Padding for spacing */
-    cursor: pointer; /* Cursor changes to pointer on hover */
-    border-bottom: 1px solid white; /* White line under each item */
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  color: #ffffff;
+  padding: 5px 0;
+  cursor: pointer;
+  border-bottom: 1px solid white;
 }
 
-/* Post feed section styling */
 .postFeedTitle {
-    margin-left: auto;
-    margin-right: auto;
-    
-    padding: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; /* Space between items */
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .postFeedBody {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 
-    padding: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; /* Space between items */
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-/* Interaction buttons styling */
 .interactionButton {
-    background: none;
-    border: none;
-    color: #3498db;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: color 0.3s ease; /* Add hover effect for buttons */
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
 .interactionButton:hover {
-    color: #2980b9; /* Darker blue on hover */
+  color: #2980b9;
 }
 
-/* Footer styling for timestamp and comment info */
 .postFooter {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    width: 100%; /* Full width for footer */
-    font-size: 12px;
-    color: #888888;
-    gap: 30px; /* Add more space between items */
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 12px;
+  color: #888888;
+  gap: 30px;
 }
 
-
-/* search bar */
 .searchContainer {
-    flex-grow: 1; /* Allow search container to grow */
-    max-width: 400px; /* Limit the width for the search bar */
+  flex-grow: 1;
+  max-width: 400px;
 }
 
-/* Styling for the search input field */
 .searchInput {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ddd; /* Light border for contrast */
-    border-radius: 5px;
-    outline: none; /* Remove default outline */
-    transition: border-color 0.3s ease; /* Smooth transition on focus */
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  color: black;
 }
 
 .searchInput:focus {
-    border-color: #3498db; /* Change border color on focus */
-    box-shadow: 0 0 5px rgba(50, 50, 200, 0.2); /* Subtle shadow on focus */
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(50, 50, 200, 0.2);
 }

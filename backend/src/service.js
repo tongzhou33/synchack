@@ -1,27 +1,28 @@
-import fs from "fs";
-import jwt from "jsonwebtoken";
-import AsyncLock from "async-lock";
-import { InputError, AccessError } from "./error.js";
+import fs from 'fs';
+import jwt from 'jsonwebtoken';
+import AsyncLock from 'async-lock';
+import { InputError, AccessError } from './error.js';
 
 const lock = new AsyncLock();
 
-const JWT_SECRET = "Bananallamasquad3421";
-const DATABASE_FILE = "./database.json";
-const POSTCODE_FILE = "../assets/postcodes.json";
+const JWT_SECRET = 'Bananallamasquad3421';
+const DATABASE_FILE = './database.json';
+const POSTCODE_FILE = '../assets/postcodes.json';
 
 /***************************************************************
                        State Management
 ***************************************************************/
 
 let admins = {};
-let posts = [];
+let posts = {};
 let postcodes = {};
+let postIds = [];
 
 const sessionTimeouts = {};
 
 const update = (admins) =>
   new Promise((resolve, reject) => {
-    lock.acquire("saveData", () => {
+    lock.acquire('saveData', () => {
       try {
         fs.writeFileSync(
           DATABASE_FILE,
@@ -29,6 +30,7 @@ const update = (admins) =>
             {
               admins,
               posts,
+              postIds,
             },
             null,
             2
@@ -36,7 +38,7 @@ const update = (admins) =>
         );
         resolve();
       } catch {
-        reject(new Error("Writing to database failed"));
+        reject(new Error('Writing to database failed'));
       }
     });
   });
@@ -51,10 +53,11 @@ try {
   const data = JSON.parse(fs.readFileSync(DATABASE_FILE));
   admins = data.admins;
   posts = data.posts;
+  postIds = data.postIds;
 
   const postcodes = JSON.parse(fs.readFileSync(POSTCODE_FILE));
 } catch {
-  console.log("WARNING: No database found, create a new one");
+  console.log('WARNING: No database found, create a new one');
   save();
 }
 
@@ -64,7 +67,7 @@ try {
 
 export const userLock = (callback) =>
   new Promise((resolve, reject) => {
-    lock.acquire("userAuthLock", callback(resolve, reject));
+    lock.acquire('userAuthLock', callback(resolve, reject));
   });
 
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
@@ -73,10 +76,7 @@ const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
   const dLon = deg2rad(lon2 - lon1);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(lat1)) *
-      Math.cos(deg2rad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
   return d;
@@ -96,7 +96,7 @@ const getLatLon = (suburb) => {
     }
   }
 
-  throw new InputError("Invalid suburb");
+  throw new InputError('Invalid suburb');
 };
 
 /***************************************************************
@@ -105,14 +105,14 @@ const getLatLon = (suburb) => {
 
 export const getEmailFromAuthorization = (authorization) => {
   try {
-    const token = authorization.replace("Bearer ", "");
+    const token = authorization.replace('Bearer ', '');
     const { email } = jwt.verify(token, JWT_SECRET);
     if (!(email in admins)) {
-      throw new AccessError("Invalid Token");
+      throw new AccessError('Invalid Token');
     }
     return email;
   } catch {
-    throw new AccessError("Invalid token");
+    throw new AccessError('Invalid token');
   }
 };
 
@@ -120,10 +120,10 @@ export const login = (email, password) =>
   userLock((resolve, reject) => {
     if (email in admins) {
       if (admins[email].password === password) {
-        resolve(jwt.sign({ email }, JWT_SECRET, { algorithm: "HS256" }));
+        resolve(jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' }));
       }
     }
-    reject(new InputError("Invalid username or password"));
+    reject(new InputError('Invalid username or password'));
   });
 
 export const logout = (email) =>
@@ -135,7 +135,7 @@ export const logout = (email) =>
 export const register = (email, password, name, dob, age, location) =>
   userLock((resolve, reject) => {
     if (email in admins) {
-      return reject(new InputError("Email address already registered"));
+      return reject(new InputError('Email address already registered'));
     }
     admins[email] = {
       name,
@@ -147,27 +147,19 @@ export const register = (email, password, name, dob, age, location) =>
       friends: [],
       posts: [],
     };
-    const token = jwt.sign({ email }, JWT_SECRET, { algorithm: "HS256" });
+    const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
     resolve(token);
   });
 
 /***************************************************************
                        Post Functions
 ***************************************************************/
-export const createPost = (
-  email,
-  postId,
-  title,
-  location,
-  time,
-  description,
-  max_members,
-  requirements
-) => {
+export const createPost = (email, postId, title, location, time, description, max_members, requirements) => {
   userLock((resolve, reject) => {
     if (email in admins) {
       admins[email].posts.push(postId);
       posts[postId] = {
+        id: postId,
         admin: email,
         title,
         location,
@@ -181,19 +173,26 @@ export const createPost = (
         visibility: true,
       };
 
+      postIds.push(postId);
       resolve();
     }
 
-    reject(new AccessError("Invalid email"));
+    reject(new AccessError('Invalid email'));
   });
 };
 
 export const getPosts = (email) => {
   if (email in admins) {
-    return posts;
+    let arrayPosts = [];
+
+    for (const postId of postIds) {
+      arrayPosts.push(posts[postId]);
+    }
+
+    return arrayPosts;
   }
 
-  throw new AccessError("Invalid email");
+  throw new AccessError('Invalid email');
 };
 
 export const joinPost = (email, postId) => {
@@ -203,25 +202,21 @@ export const joinPost = (email, postId) => {
       resolve();
     }
 
-    reject(new AccessError("Invalid email or post"));
+    reject(new AccessError('Invalid email or post'));
   });
 };
 
 export const leavePost = (email, postId) => {
   userLock((resolve, reject) => {
     if (email in admins && postId in post) {
-      admins[email].posts = admins[email].posts.filter(
-        (post) => post !== postId
-      );
+      admins[email].posts = admins[email].posts.filter((post) => post !== postId);
 
-      posts[postId].members = posts[postId].members.filter(
-        (members) => members !== email
-      );
+      posts[postId].members = posts[postId].members.filter((members) => members !== email);
 
       resolve();
     }
 
-    reject(new AccessError("Invalid email or post"));
+    reject(new AccessError('Invalid email or post'));
   });
 };
 
@@ -229,14 +224,19 @@ export const deletePost = (email, postId) => {
   userLock((resolve, reject) => {
     if (email in admins && postId in posts) {
       if (posts[postId].admin === email) {
+        for (let member of posts[postId].members) {
+          admins[member].posts = admins[member].posts.filter((post) => post !== postId);
+        }
+
         delete posts[postId];
+        postIds = postIds.filter((id) => id !== postId);
         resolve();
       }
 
-      reject(new AccessError("User is not admin of post"));
+      reject(new AccessError('User is not admin of post'));
     }
 
-    reject(new AccessError("Invalid email or post"));
+    reject(new AccessError('Invalid email or post'));
   });
 };
 
@@ -248,10 +248,10 @@ export const hidePost = (email, postId) => {
         resolve();
       }
 
-      reject(new AccessError("User is not admin of post"));
+      reject(new AccessError('User is not admin of post'));
     }
 
-    reject(new AccessError("Invalid email or post"));
+    reject(new AccessError('Invalid email or post'));
   });
 };
 
@@ -262,7 +262,7 @@ export const savePost = (email, postId) => {
       resolve();
     }
 
-    reject(new AccessError("Invalid email or post"));
+    reject(new AccessError('Invalid email or post'));
   });
 };
 
@@ -281,7 +281,7 @@ export const sendMessage = (email, postId, time, message) => {
       resolve();
     }
 
-    reject(new AccessError("Invalid email or post"));
+    reject(new AccessError('Invalid email or post'));
   });
 };
 
@@ -290,7 +290,7 @@ export const getMessages = (postId) => {
     return posts[postId].messages;
   }
 
-  throw new AccessError("Invalid post");
+  throw new AccessError('Invalid post');
 };
 
 /***************************************************************
@@ -303,20 +303,18 @@ export const addFriend = (email, friendEmail) => {
       resolve();
     }
 
-    reject(new AccessError("Invalid email or friend email"));
+    reject(new AccessError('Invalid email or friend email'));
   });
 };
 
 export const removeFriend = (email, friendEmail) => {
   userLock((resolve, reject) => {
     if (email in admins && friendEmail in admins) {
-      admins[email].friends = admins[email].friends.filter(
-        (friend) => friend !== friendEmail
-      );
+      admins[email].friends = admins[email].friends.filter((friend) => friend !== friendEmail);
       resolve();
     }
 
-    reject(new AccessError("Invalid email or friend email"));
+    reject(new AccessError('Invalid email or friend email'));
   });
 };
 
@@ -325,7 +323,7 @@ export const getFriends = (email) => {
     return admins[email].friends;
   }
 
-  throw new AccessError("Invalid email");
+  throw new AccessError('Invalid email');
 };
 
 /***************************************************************
@@ -334,10 +332,10 @@ export const getFriends = (email) => {
 
 export const searchPosts = (email, search) => {
   if (!email in admins) {
-    throw new AccessError("Invalid email");
+    throw new AccessError('Invalid email');
   }
 
-  const searchWords = search.split(" ");
+  const searchWords = search.split(' ');
 
   const filteredPosts = posts.filter((post) => {
     for (let word of searchWords) {
@@ -361,23 +359,11 @@ export const searchPosts = (email, search) => {
     const latLonA = getLatLon(postcodes[a.location]);
     const latLonB = getLatLon(postcodes[b.location]);
 
-    const distanceA = getDistanceFromLatLonInKm(
-      latLonUser.lat,
-      latLonUser.lon,
-      latLonA.lat,
-      latLonA.lon
-    );
+    const distanceA = getDistanceFromLatLonInKm(latLonUser.lat, latLonUser.lon, latLonA.lat, latLonA.lon);
 
-    const distanceB = getDistanceFromLatLonInKm(
-      latLonUser.lat,
-      latLonUser.lon,
-      latLonB.lat,
-      latLonB.lon
-    );
+    const distanceB = getDistanceFromLatLonInKm(latLonUser.lat, latLonUser.lon, latLonB.lat, latLonB.lon);
 
-    return distanceA - distanceB === 0
-      ? a.time - b.time
-      : distanceA - distanceB;
+    return distanceA - distanceB === 0 ? a.time - b.time : distanceA - distanceB;
   });
 
   return filteredPosts;
