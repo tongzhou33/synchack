@@ -76,11 +76,11 @@ app.post(
 );
 
 /***************************************************************
-                       Store Functions
+                       Post Functions
 ***************************************************************/
 
 app.get(
-  '/store',
+  '/admin/post',
   catchErrors(
     authed(async (req, res, email) => {
       return res.json({ store: await getStore(email) });
@@ -89,7 +89,7 @@ app.get(
 );
 
 app.put(
-  '/store',
+  '/admin/post',
   catchErrors(
     authed(async (req, res, email) => {
       await setStore(email, req.body.store);
