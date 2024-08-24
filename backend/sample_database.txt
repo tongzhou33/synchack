@@ -1,0 +1,30 @@
+{
+    admins: [email: {
+        username: username
+        dob:
+        age:
+        likes:
+        friends:
+        name: name
+        password: password
+        posts: [id...]
+        saved: []
+    }]
+}
+
+{
+    posts: [id: {
+            title:
+            location:
+            time:
+            visibility:
+            description:
+            max_members:
+            requirements:
+            message:
+            group members:
+            group message: {
+
+            }
+        }]
+}
