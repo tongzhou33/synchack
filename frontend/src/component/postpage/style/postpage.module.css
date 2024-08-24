@@ -69,7 +69,7 @@
 .headerContent {
     display: flex;
     align-items: center; /* Center vertically */
-    justify-content: flex-start; /* Space between title and search bar */
+    justify-content: space-between; /* Space between title and search bar */
     margin-bottom: 10px; /* Space below the hero content */
 }
 

@@ -1,6 +1,10 @@
 import React from "react";
+import { CiCirclePlus } from "react-icons/ci";
+import { IconButton } from "@chakra-ui/react";
 import styles from "./style/postpage.module.css"; // Import the CSS module
 import Post from "./post.js"; // Import the Post component
+import { FaUserFriends } from "react-icons/fa";
+import { px } from "framer-motion";
 
 function Postpage() {
   return (
@@ -16,7 +20,17 @@ function Postpage() {
         <header className={styles.hero}>
           <div className={styles.heroContent}>
             <div className={styles.headerContent}>
-              <h1 className={styles.title}>Friendli</h1>
+              <span style={{ display: "flex" }}>
+                <IconButton
+                  style={{
+                    marginRight: "0.5rem",
+                  }}
+                  colorScheme="blue"
+                  aria-label="Search database"
+                  icon={<FaUserFriends />}
+                />
+                <h1 className={styles.title}>Friendli</h1>
+              </span>
               <div className={styles.searchContainer}>
                 <input
                   type="text"
@@ -24,6 +38,12 @@ function Postpage() {
                   placeholder="Search posts, friends..."
                 />
               </div>
+              <IconButton
+                colorScheme="blue"
+                aria-label="Search database"
+                style={{ borderRadius: "20px" }}
+                icon={<CiCirclePlus />}
+              />
             </div>
             <p>Connect, share, and make new friends!</p>
           </div>
