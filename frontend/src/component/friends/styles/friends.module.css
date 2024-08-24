@@ -1,3 +1,14 @@
+.sectionBox {
+    position: absolute;
+    background: #ffffff;
+    color: #000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 200px;
+    height: auto;
+}
+
 .addFriendButton {
     transition: all 0.3s ease;
 }

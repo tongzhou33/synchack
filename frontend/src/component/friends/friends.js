@@ -6,6 +6,7 @@ import { BiLike, BiChat, BiShare } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../App.js";
 import styles from "./styles/friends.module.css";
+import { motion } from "framer-motion";
 
 function Friends() {
     const [friendName, setFriendName] = useState(""); // State to hold the friend's name input
@@ -13,7 +14,14 @@ function Friends() {
   
     return (
         <section>
-            <Box p={8} maxW="sm" mx="auto">
+             <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+        
+               <Box className={styles.sectionBox} p={4}>
                 <FormControl id="friendName" mb={4}>
                     <Input
                     type="text"
@@ -26,6 +34,7 @@ function Friends() {
                     Add Friend
                 </Button>
             </Box>
+            </motion.div>
         </section>
     );
 }
