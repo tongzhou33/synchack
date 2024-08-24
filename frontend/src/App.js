@@ -1,7 +1,5 @@
-// App.js
-import { atom } from "recoil";
 import React from "react";
-import { RecoilRoot } from "recoil";
+import { atom, RecoilRoot } from "recoil";
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,17 +7,20 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { ChakraProvider } from "@chakra-ui/react"; // Ensure ChakraProvider wraps the entire app
 import Login from "./component/login/login.js"; // Adjust path as necessary
 import Register from "./component/register/register.js"; // Adjust path as necessary
 import Postpage from "./component/postpage/postpage.js";
 
+// Define Recoil state
 export const userState = atom({
   key: "userState",
   default: null, // Default to null or any initial state
 });
 
+// Component to handle animated routes
 function AnimatedRoutes() {
-  const location = useLocation();
+  const location = useLocation(); // Retrieve the current location
 
   return (
     <AnimatePresence mode="wait">
@@ -68,12 +69,15 @@ function AnimatedRoutes() {
   );
 }
 
+// Main App component
 function App() {
   return (
     <RecoilRoot>
-      <Router>
-        <AnimatedRoutes />
-      </Router>
+      <ChakraProvider>
+        <Router>
+          <AnimatedRoutes />
+        </Router>
+      </ChakraProvider>
     </RecoilRoot>
   );
 }

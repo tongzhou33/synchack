@@ -11,9 +11,13 @@ import {
   login,
   logout,
   register,
-  getStore,
-  setStore,
   save,
+  createPost,
+  savePost,
+  deletePost,
+  joinPost,
+  leavePost,
+  hidePost,
 } from './service';
 
 const app = express();
@@ -59,8 +63,8 @@ app.post(
 app.post(
   '/admin/auth/register',
   catchErrors(async (req, res) => {
-    const { email, password, name } = req.body;
-    const token = await register(email, password, name);
+    const { email, password, name, dob, age, location } = req.body;
+    const token = await register(email, password, name, dob, age, location);
     return res.json({ token });
   })
 );
@@ -80,19 +84,133 @@ app.post(
 ***************************************************************/
 
 app.get(
-  '/admin/post',
+  '/usr/post/all',
   catchErrors(
     authed(async (req, res, email) => {
-      return res.json({ store: await getStore(email) });
+      return res.json({ posts: getPosts(email) });
     })
   )
 );
 
 app.put(
-  '/admin/post',
+  '/usr/post/create',
   catchErrors(
     authed(async (req, res, email) => {
-      await setStore(email, req.body.store);
+      const {
+        email,
+        postId,
+        title,
+        location,
+        time,
+        description,
+        max_members,
+        requirements,
+      } = req.body;
+
+      await createPost(
+        email,
+        postId,
+        title,
+        location,
+        time,
+        description,
+        max_members,
+        requirements
+      );
+      return res.json({});
+    })
+  )
+);
+
+app.delete(
+  '/usr/post/delete',
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { email, postId } = req.body;
+      await deletePost(email, postId);
+      return res.json({});
+    })
+  )
+);
+
+app.post(
+  '/usr/post/join',
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { email, postId } = req.body;
+      await joinPost(email, postId);
+      return res.json({});
+    })
+  )
+);
+
+app.post(
+  '/usr/post/leave',
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { email, postId } = req.body;
+      await leavePost(email, postId);
+      return res.json({});
+    })
+  )
+);
+
+app.post(
+  '/usr/post/save',
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { email, postId } = req.body;
+      await savePost(email, postId);
+      return res.json({});
+    })
+  )
+);
+
+app.post(
+  '/usr/post/hide',
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { email, postId } = req.body;
+      await hidePost(email, postId);
+      return res.json({});
+    })
+  )
+);
+
+/***************************************************************
+                       Message Functions
+***************************************************************/
+
+app.get(
+  '/usr/message/all',
+  catchErrors(
+    authed(async (req, res, email) => {
+      return res.json({ messages: getMessages(email) });
+    })
+  )
+);
+
+app.post(
+  '/usr/message/send',
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { email, postId, time, message } = req.body;
+      await sendMessage(email, postId, time, message);
+      return res.json({});
+    })
+  )
+);
+
+/***************************************************************
+                     Add Friend Functions
+***************************************************************/
+
+app.post(
+  '/usr/friend/add',
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { email, friendEmail } = req.body;
+      await addFriend(email, friendEmail);
       return res.json({});
     })
   )

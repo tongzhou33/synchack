@@ -67,6 +67,38 @@ export const userLock = (callback) =>
     lock.acquire('userAuthLock', callback(resolve, reject));
   });
 
+const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+  const R = 6371;
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c;
+  return d;
+};
+
+const deg2rad = (deg) => {
+  return deg * (Math.PI / 180);
+};
+
+const getLatLon = (suburb) => {
+  for (let postcode in postcodes) {
+    if (postcode.suburb.toLowerCase() === suburb.toLowerCase()) {
+      return {
+        lat: postcode.lat,
+        lon: postcode.lon,
+      };
+    }
+  }
+
+  throw new InputError('Invalid suburb');
+};
+
 /***************************************************************
                        Auth Functions
 ***************************************************************/
@@ -100,7 +132,7 @@ export const logout = (email) =>
     resolve();
   });
 
-export const register = (email, password, name, dob, age) =>
+export const register = (email, password, name, dob, age, location) =>
   userLock((resolve, reject) => {
     if (email in admins) {
       return reject(new InputError('Email address already registered'));
@@ -110,6 +142,7 @@ export const register = (email, password, name, dob, age) =>
       password,
       dob,
       age,
+      location,
       likes: [],
       friends: [],
       posts: [],
@@ -155,7 +188,13 @@ export const createPost = (
   });
 };
 
-export const getPosts = () => posts;
+export const getPosts = (email) => {
+  if (email in admins) {
+    return posts;
+  }
+
+  throw new AccessError('Invalid email');
+};
 
 export const joinPost = (email, postId) => {
   userLock((resolve, reject) => {
@@ -297,6 +336,49 @@ export const searchPosts = (email, search) => {
   if (!email in admins) {
     throw new AccessError('Invalid email');
   }
+
+  const searchWords = search.split(' ');
+
+  const filteredPosts = posts.filter((post) => {
+    for (let word of searchWords) {
+      if (
+        post.title.includes(word) ||
+        post.location.includes(word) ||
+        post.description.includes(word) ||
+        post.requirements.includes(word)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+
+  // Sort the posts by the distance from the user
+  // If the distance is the same, sort by the time it was posted
+  filteredPosts = filteredPosts.sort((a, b) => {
+    const latLonUser = getLatLon(admins[email].location);
+    const latLonA = getLatLon(postcodes[a.location]);
+    const latLonB = getLatLon(postcodes[b.location]);
+
+    const distanceA = getDistanceFromLatLonInKm(
+      latLonUser.lat,
+      latLonUser.lon,
+      latLonA.lat,
+      latLonA.lon
+    );
+
+    const distanceB = getDistanceFromLatLonInKm(
+      latLonUser.lat,
+      latLonUser.lon,
+      latLonB.lat,
+      latLonB.lon
+    );
+
+    return distanceA - distanceB === 0
+      ? a.time - b.time
+      : distanceA - distanceB;
+  });
 
   return filteredPosts;
 };
