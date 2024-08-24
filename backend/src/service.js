@@ -197,7 +197,7 @@ export const getPosts = (email) => {
 
 export const joinPost = (email, postId) => {
   userLock((resolve, reject) => {
-    if (email in admins && postId in post) {
+    if (email in admins && postId in posts) {
       admins[email].posts.push(postId);
       resolve();
     }
