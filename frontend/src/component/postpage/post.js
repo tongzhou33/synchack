@@ -55,7 +55,6 @@ function Post() {
     fetchData();
   }, [updatedPost, posts]); // Re-run fetchData when token or email changes
 
-  /////// Backendd delete doent work //////////////
   const handleDelete = async (postId) => {
     try {
       await axios.delete('http://localhost:5005/usr/post/delete', {

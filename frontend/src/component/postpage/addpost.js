@@ -17,6 +17,7 @@ import {
   PopoverFooter,
   ButtonGroup,
   useToast,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '../../App.js';
@@ -36,6 +37,7 @@ function AddPost() {
   const initialFocusRef = React.useRef();
   const { token, email } = useRecoilValue(userState); // Destructure token and email from userState
   const [, setUser] = useRecoilState(userState);
+  const { onOpen, onClose, isOpen } = useDisclosure();
 
   const handleSubmit = async () => {
     // Prepare the data to send to the backend
@@ -67,6 +69,8 @@ function AddPost() {
         duration: 5000,
         isClosable: true,
       });
+
+      onClose(); // Close the popover after successful post creation
     } catch (error) {
       // Handle error and display an error toast message
       toast({
@@ -83,7 +87,14 @@ function AddPost() {
   };
 
   return (
-    <Popover initialFocusRef={initialFocusRef} placement='bottom' closeOnBlur={false}>
+    <Popover
+      initialFocusRef={initialFocusRef}
+      placement='bottom'
+      closeOnBlur={false}
+      isOpen={isOpen}
+      onOpen={onOpen}
+      onClose={onClose}
+    >
       <PopoverTrigger>
         <Button colorScheme='blue' style={{ borderRadius: '20px' }}>
           New Post

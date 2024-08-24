@@ -30,9 +30,67 @@
       "age": "12",
       "likes": [],
       "friends": [],
-      "posts": ["584"]
+      "posts": [
+        "584",
+        "352",
+        "517",
+        "196"
+      ]
     }
   },
-  "posts": {},
-  "postIds": []
+  "posts": {
+    "196": {
+      "id": "196",
+      "admin": "a",
+      "title": "",
+      "location": "",
+      "time": "",
+      "description": "",
+      "requirements": "",
+      "max_members": "",
+      "members": [
+        "a"
+      ],
+      "messages": [],
+      "saved": [],
+      "visibility": true
+    },
+    "352": {
+      "id": "352",
+      "admin": "a",
+      "title": "",
+      "location": "",
+      "time": "",
+      "description": "",
+      "requirements": "",
+      "max_members": "",
+      "members": [
+        "a"
+      ],
+      "messages": [],
+      "saved": [],
+      "visibility": true
+    },
+    "517": {
+      "id": "517",
+      "admin": "a",
+      "title": "",
+      "location": "",
+      "time": "",
+      "description": "",
+      "requirements": "",
+      "max_members": "",
+      "members": [
+        "a"
+      ],
+      "messages": [],
+      "saved": [],
+      "visibility": true
+    }
+  },
+  "postIds": [
+    "352",
+    "517",
+    "196"
+  ]
 }
