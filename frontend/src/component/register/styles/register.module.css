@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200, 300, 400, 500, 600, 700, 800, 900%display=swap');
+
+.background {
+    background: url(bg5.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.registerContainer {
+    position: relative;
+    width: 50vh;
+    height: 50vh;
+    border-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 25);
+    z-index: 1000;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.registerContainer::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-conic-gradient(from var(--a), #f277a2 0%, #f277a2 10%, transparent 10%, transparent 80%, #f277a2 100%);
+    border-radius:  20px;
+    animation: animate 2.5s linear infinite;
+}
+@property --a {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+@keyframes animate {
+    0% {
+        --a: 0deg
+    }
+    100% {
+        --a: 360deg
+    }
+}
+
+.registerContainer span {
+    position: absolute;
+    inset: 5px;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.registerContainer span::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    background: url(bg5.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+}
+
+.registerContainer span::after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    background: url(bg5.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px);
+}
+
+.registerTitle {
+    position: relative;
+    font-size: 36px;
+    font-weight: 700;
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+.signinForm {
+    position: relative;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+    transition: 0.5s;
+}
+
+.signinForm h2 {
+    position: relative;
+    color : white;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.signinForm .inputBox {
+    position: relative;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.signinForm .inputBoxGroup {
+    position: relative;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signinForm .inputBoxGroup a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.signinForm .inputBoxGroup a:nth-of-type(2) {
+    text-decoration: underline;
+}
+
+
+.signinForm .inputBox input {
+    width: 100%;
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0.281); 
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 6px 15px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    color:#ffffff;
+}
+
+.signinForm .inputBox input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.signinForm .inputBox input[type="submit"] {
+    background-color: #f277a2;
+    transition: transform 0.1s ease; /* Smooth transition for shrinking */
+}
+
+.signinForm .inputBox input[type="submit"]:active {
+    transform: scale(0.95); /* Shrinks the button to 95% of its size */
+}
