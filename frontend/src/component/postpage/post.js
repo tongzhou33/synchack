@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { BsTrash } from "react-icons/bs";
 import { BiLike, BiChat, BiShare, BiUserPlus, BiBookmarkAdd, BiBookmark } from "react-icons/bi";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { userState } from "../../App.js";
 
 function removeNullsFromArray(array) {
@@ -31,7 +31,7 @@ function Post() {
   const [openChatId, setOpenChatId] = useState(null); // State to track which post's chat is open
   const [newMessage, setNewMessage] = useState(""); // State to handle new message input
   const { token, email, updatedPost } = useRecoilValue(userState); // Destructure token and email from userState
-
+  const [, setUser] = useRecoilState(userState);
   useEffect(() => {
     // Fetch data from the backend when the component mounts
     const fetchData = async () => {
@@ -48,7 +48,6 @@ function Post() {
             email: email, // Add email header if the backend requires it
           },
         });
-        console.log(response.data.posts);
         setPosts(removeNullsFromArray(response.data.posts)); // Assuming response contains { posts: [...] }
       } catch (err) {
         console.error('Error fetching posts:', err);
@@ -81,7 +80,7 @@ function Post() {
           },
         }
       );
-
+      setUser((prev) => ({ ...prev, updatedPost: !prev.updatedPost }));
       setNewMessage(""); // Clear the input field after sending
     } catch (err) {
       console.error("Error sending message:", err);
@@ -107,7 +106,6 @@ function Post() {
                 colorScheme='gray'
                 aria-label='Delete post'
                 icon={<BsTrash />}
-                onClick={() => handleDelete(post.id)}
               />
             </Flex>
           </CardHeader>
@@ -150,8 +148,8 @@ function Post() {
               <Text>Group Chat:</Text>
               {post.messages && post.messages.map((message) => (
                 <Box key={message.id} p={2} bg="white" my={2}>
-                  <Text fontWeight="bold">{message.author}</Text>
-                  <Text>{message.text}</Text>
+                  <Text fontWeight="bold">{message.email}</Text>
+                  <Text>{message.message}</Text>
                 </Box>
               ))}
               <Stack direction="row" mt={4} align="center">
