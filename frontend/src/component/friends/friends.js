@@ -14,12 +14,7 @@ function Friends() {
   
     return (
         <section>
-             <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-              >
+       
         
                <Box className={styles.sectionBox} p={4}>
                 <FormControl id="friendName" mb={4}>
@@ -34,7 +29,7 @@ function Friends() {
                     Add Friend
                 </Button>
             </Box>
-            </motion.div>
+
         </section>
     );
 }

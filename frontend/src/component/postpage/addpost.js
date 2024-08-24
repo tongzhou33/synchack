@@ -35,12 +35,13 @@ function AddPost() {
   const toast = useToast();
   const initialFocusRef = React.useRef();
   const { token, email } = useRecoilValue(userState); // Destructure token and email from userState
+  const [, setUser] = useRecoilState(userState);
 
   const handleSubmit = async () => {
     // Prepare the data to send to the backend
     const postData = {
       email: email,
-      postId: "0", // Assuming postId is randomly generated
+      postId: getRandomNumber(1, 1000).toString(), // Assuming postId is randomly generated
       title: title,
       location: location,
       time: date,
@@ -81,7 +82,11 @@ function AddPost() {
       });
       console.error("Error creating post:", error);
     }
+
+    setUser((prev) => ({ ...prev, updatedPost: !prev.updatedPost }));
   };
+
+
   return (
     <Popover
       initialFocusRef={initialFocusRef}

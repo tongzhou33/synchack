@@ -19,11 +19,17 @@ import { BiLike, BiChat, BiShare } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../App.js";
 
+function removeNullsFromArray(array) {
+  return array.filter(item => item !== null).reverse();
+}
+
 function Post() {
   const [posts, setPosts] = useState([]); // State to hold posts
   const [error, setError] = useState(null); // State to handle errors
-  const { token, email } = useRecoilValue(userState); // Destructure token and email from userState
+  const { token, email, updatedPost } = useRecoilValue(userState); // Destructure token and email from userState
   
+  
+ 
   useEffect(() => {
     // Fetch data from the backend when the component mounts
     const fetchData = async () => {
@@ -31,8 +37,6 @@ function Post() {
         setError("No token or email found. Please log in first.");
         return;
       }
-      console.log(email);
-      console.log(token);
 
       try {
         const response = await axios.get("http://localhost:5005/usr/post/all", {
@@ -42,7 +46,7 @@ function Post() {
             email: email, // Add email header if the backend requires it
           },
         });
-        setPosts(response.data.posts); // Assuming response contains { posts: [...] }
+        setPosts(removeNullsFromArray(response.data.posts)); // Assuming response contains { posts: [...] }
       } catch (err) {
         console.error("Error fetching posts:", err);
         setError("Failed to fetch posts. Please try again later.");
@@ -50,11 +54,13 @@ function Post() {
     };
 
     fetchData();
-  }, [token, email]); // Re-run fetchData when token or email changes
+  }, [updatedPost]); // Re-run fetchData when token or email changes
 
   if (error) {
     return <div>Error: {error}</div>; // Display an error message if there's an error
   }
+
+  console.log(posts);
 
   return (
     <div>
@@ -78,7 +84,7 @@ function Post() {
             </Flex>
           </CardHeader>
           <CardBody>
-            <Text>{post.content}</Text>
+            <Text>{post.description}</Text>
           </CardBody>
           {post.imageUrl && (
             <Image objectFit="cover" src={post.imageUrl} alt="Post Image" />

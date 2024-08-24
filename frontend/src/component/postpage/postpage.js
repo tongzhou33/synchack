@@ -65,13 +65,7 @@ function Postpage() {
         {/* Post Feed Section */}
         <section className={styles.postFeed}>
           <h2>Recent Posts</h2>
-
           <Post />
-          <br />
-          <Post />
-          <br />
-          <Post />
-          <br />
           {/* Add more posts to see the scrolling effect */}
         </section>
       </section>

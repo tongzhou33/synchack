@@ -19,6 +19,7 @@ export const userState = atom({
   default: {
     token: null,
     email: null,
+    updatedPost: false,
   }, // Default to null or any initial state
 });
 
