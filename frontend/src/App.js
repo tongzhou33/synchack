@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChakraProvider } from "@chakra-ui/react"; // Ensure ChakraProvider wraps the entire app
+
 import Login from "./component/login/login.js"; // Adjust path as necessary
 import Register from "./component/register/register.js"; // Adjust path as necessary
 import Postpage from "./component/postpage/postpage.js";
@@ -20,12 +21,12 @@ export const userState = atom({
     token: null,
     email: null,
     updatedPost: false,
-  }, // Default to null or any initial state
+  },
 });
 
 // Component to handle animated routes
 function AnimatedRoutes() {
-  const location = useLocation(); // Retrieve the current location
+  const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
@@ -43,7 +44,7 @@ function AnimatedRoutes() {
             </motion.div>
           }
         />
-         <Route
+        <Route
           path="/friends"
           element={
             <motion.div
