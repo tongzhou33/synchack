@@ -109,16 +109,13 @@ function Friends() {
         <Button className={styles.addFriendButton} colorScheme='teal' onClick={handleAddFriend}>
           Add Friend
         </Button>
-      </Box>
-
-      <Box className={styles.friendsListBox} p={4} mt={4}>
         <Text fontSize='lg' mb={2}>
           Friends List:
         </Text>
         <List spacing={3}>
           {friends.map((friend, index) => (
             <ListItem key={index} className={styles.friendItem}>
-              <Text>{friend}</Text>
+              <Text>-{friend}</Text>
             </ListItem>
           ))}
         </List>
