@@ -19,7 +19,9 @@
       "age": "22",
       "likes": [],
       "friends": [],
-      "posts": []
+      "posts": [
+        "204"
+      ]
     },
     "": {
       "name": "",
@@ -162,7 +164,8 @@
       "requirements": "asd",
       "max_members": "asd",
       "members": [
-        "tongzhou33@hotmail.com"
+        "tongzhou33@hotmail.com",
+        "jaden"
       ],
       "messages": [],
       "saved": [],

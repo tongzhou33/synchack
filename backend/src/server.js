@@ -16,6 +16,8 @@ import {
   sendMessage,
   deletePost,
   joinPost,
+  addFriend,
+  getFriends,
   leavePost,
   hidePost,
 } from './service';
