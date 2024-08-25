@@ -87,7 +87,7 @@ function RegisterPage() {
 
               <div className={styles.inputBoxGroup}>
                 <Link to='#'>Forget Password</Link>
-                <Link to='/login'>Login</Link>
+                <Link to='/'>Login</Link>
               </div>
               <div className={styles.inputBox}>
                 <input type='submit' name='' value='Register' />
