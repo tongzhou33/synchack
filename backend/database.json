@@ -6,12 +6,7 @@
       "age": "18",
       "likes": [],
       "friends": [],
-      "posts": [
-        "163",
-        "81",
-        "808",
-        "204"
-      ]
+      "posts": []
     },
     "jaden": {
       "name": "jaden",
@@ -19,9 +14,7 @@
       "age": "22",
       "likes": [],
       "friends": [],
-      "posts": [
-        "204"
-      ]
+      "posts": []
     },
     "": {
       "name": "",
@@ -109,138 +102,10 @@
         "204",
         "204",
         "204",
-        "204",
-        "204",
-        "808"
+        "204"
       ]
     }
   },
-  "posts": {
-    "81": {
-      "id": "81",
-      "admin": "tongzhou33@hotmail.com",
-      "title": "asdagsfdg",
-      "location": "asd",
-      "time": "assda",
-      "description": "asd",
-      "requirements": "sd",
-      "max_members": "asd",
-      "members": [
-        "tongzhou33@hotmail.com"
-      ],
-      "messages": [
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:40:06.604Z",
-          "message": "asdasd"
-        },
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:40:08.050Z",
-          "message": "asdasd"
-        },
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:40:11.031Z",
-          "message": "Hi"
-        }
-      ],
-      "saved": [],
-      "visibility": true
-    },
-    "163": {
-      "id": "163",
-      "admin": "tongzhou33@hotmail.com",
-      "title": "asd",
-      "location": "asd",
-      "time": "assda",
-      "description": "asd",
-      "requirements": "sd",
-      "max_members": "asd",
-      "members": [
-        "tongzhou33@hotmail.com"
-      ],
-      "messages": [
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:37:42.906Z",
-          "message": "asdas"
-        },
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:38:06.793Z",
-          "message": "asdasdad"
-        },
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:38:46.289Z",
-          "message": "adasd"
-        },
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:38:47.559Z",
-          "message": "ad"
-        },
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:38:48.531Z",
-          "message": "asd"
-        },
-        {
-          "email": "tongzhou33@hotmail.com",
-          "time": "2024-08-24T23:39:57.894Z",
-          "message": "asdassd"
-        }
-      ],
-      "saved": [],
-      "visibility": true
-    },
-    "204": {
-      "id": "204",
-      "admin": "tongzhou33@hotmail.com",
-      "title": "asd",
-      "location": "asd",
-      "time": "asd",
-      "description": "asd",
-      "requirements": "asd",
-      "max_members": "asd",
-      "members": [
-        "tongzhou33@hotmail.com",
-        "jaden",
-        "a"
-      ],
-      "messages": [
-        {
-          "email": "a",
-          "time": "2024-08-25T00:25:49.052Z",
-          "message": "asdfasdf"
-        }
-      ],
-      "saved": [],
-      "visibility": true
-    },
-    "808": {
-      "id": "808",
-      "admin": "tongzhou33@hotmail.com",
-      "title": "asd",
-      "location": "asd",
-      "time": "asd",
-      "description": "asd",
-      "requirements": "asd",
-      "max_members": "asd",
-      "members": [
-        "tongzhou33@hotmail.com",
-        "a"
-      ],
-      "messages": [],
-      "saved": [],
-      "visibility": true
-    }
-  },
-  "postIds": [
-    "163",
-    "81",
-    "808",
-    "204"
-  ]
+  "posts": {},
+  "postIds": []
 }

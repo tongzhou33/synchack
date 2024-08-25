@@ -109,6 +109,28 @@ function Post() {
     }
   };
 
+  const handleDeletePost = async (postId) => {
+    try {
+      await axios.delete('http://localhost:5005/usr/post/delete', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          email: email,
+        },
+        data: {
+          postId, // Pass postId to delete
+        },
+      });
+      // Update the posts state by removing the deleted post
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+      setUser((prev) => ({ ...prev, updatedPost: !prev.updatedPost }));
+    } catch (err) {
+      console.error('Error deleting post:', err);
+      setError('Failed to delete the post. Please try again later.');
+    }
+  };
+
+
   return (
     <div style={{ width: '100%' }}>
       {posts.map((post) => (
@@ -122,7 +144,13 @@ function Post() {
                   <Text>{post.location}</Text>
                 </Box>
               </Flex>
-              <IconButton variant='ghost' colorScheme='gray' aria-label='Delete post' icon={<BsTrash />} />
+              <IconButton
+                variant='ghost'
+                colorScheme='gray'
+                aria-label='Delete post'
+                icon={<BsTrash />}
+                onClick={() => handleDeletePost(post.id)}
+              />
             </Flex>
           </CardHeader>
           <CardBody>
