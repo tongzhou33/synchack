@@ -144,12 +144,11 @@ function Post() {
             }}
           >
             <Button
-              visibility={post.members.includes(email) ? 'hidden' : 'visible'}
               flex='1'
               variant='ghost'
               leftIcon={<BiUserPlus />}
               onClick={() => handleJoinGroup(post.id)}
-              disabled={post.members.includes(email)}
+              isDisabled={post.members.includes(email)}
             >
               {post.members.includes(email) ? 'Joined' : 'Join Group'}
             </Button>
