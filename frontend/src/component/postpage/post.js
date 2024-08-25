@@ -110,9 +110,9 @@ function Post() {
   };
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {posts.map((post) => (
-        <Card key={post.id} maxW='md' mb={4}>
+        <Card key={post.id} mb={4}>
           <CardHeader>
             <Flex spacing='4'>
               <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
