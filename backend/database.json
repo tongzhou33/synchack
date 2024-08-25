@@ -36,7 +36,11 @@
       "password": "a",
       "age": "12",
       "likes": [],
-      "friends": [],
+      "friends": [
+        "a",
+        "a",
+        "a"
+      ],
       "posts": [
         "584",
         "204",

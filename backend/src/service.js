@@ -323,7 +323,7 @@ export const getFriends = (email) => {
   if (email in admins) {
     let friends = [];
     for (let friend of admins[email].friends) {
-      friends.push(admins[friend]);
+      friends.push(admins[friend].name);
     }
     return friends;
   }
