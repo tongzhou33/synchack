@@ -4,7 +4,6 @@ import { Box, Input, Button, useToast, FormControl, FormLabel, List, ListItem, T
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../App.js';
 import styles from './styles/friends.module.css';
-import { motion } from 'framer-motion';
 
 function Friends() {
   const [friendName, setFriendName] = useState(''); // State to hold the friend's name input
@@ -46,6 +45,17 @@ function Friends() {
         title: 'Invalid input.',
         description: "Please enter a friend's email.",
         status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (friends.includes(friendName)) {
+      toast({
+        title: 'Friend already added.',
+        description: `${friendName} is already in your friends list.`,
+        status: 'info',
         duration: 3000,
         isClosable: true,
       });
